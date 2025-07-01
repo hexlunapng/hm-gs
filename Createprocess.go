@@ -11,23 +11,7 @@ import (
 )
 
 
-func main() {
-	listener, err := net.Listen("tcp", ":7777")
-	if err != nil {
-		panic(err)
-	}
-	defer listener.Close()
-	fmt.Println("Listening on port 7777...")
 
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			fmt.Printf("Accept error: %v\n", err)
-			continue
-		}
-		go handleConnection(conn)
-	}
-}
 
 var bLogProcessEvent int32 = 1
 
@@ -106,9 +90,23 @@ func main() {
 	fmt.Println("[Init] Created DefaultFortGameModeAthena object")
 
 	fmt.Println("[Init] Got PlayerController from World")
-
 	go inputThread()
-
+	
+listener, err := net.Listen("tcp", ":7777")
+	if err != nil {
+		panic(err)
+	}
+	defer listener.Close()
+	fmt.Println("Listening on port 7777...")
+for {
+		conn, err := listener.Accept()
+		if err != nil {
+			fmt.Printf("Accept error: %v\n", err)
+			continue
+		}
+		go handleConnection(conn)
+	}
+}
 	
 	commands := []string{
 		"log LogProfileSys VeryVerbose",
